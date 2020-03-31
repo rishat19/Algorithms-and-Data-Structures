@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Objects;
 
 //Класс GraphCode, хранящий список ребер для графа. Элемент – ребро, содержащее два номера своих вершин.
 
@@ -14,8 +15,23 @@ public class GraphCode {
             this.beginningOfEdge = beginningOfEdge;
             this.endOfEdge = endOfEdge;
         }
-        public int[] get() {
-            return new int[] {beginningOfEdge, endOfEdge};
+        public int getBeginningOfEdge() {
+            return beginningOfEdge;
+        }
+        public int getEndOfEdge() {
+            return endOfEdge;
+        }
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Edge edge = (Edge) o;
+            return beginningOfEdge == edge.beginningOfEdge &&
+                    endOfEdge == edge.endOfEdge;
+        }
+        @Override
+        public int hashCode() {
+            return Objects.hash(beginningOfEdge, endOfEdge);
         }
     }
 
@@ -36,24 +52,24 @@ public class GraphCode {
                 }
             }
             for (int j = 0; j < numberOfEdges; j++) {
-                int beginningOfEdge = -1;
-                int endOfEdge = -1;
+                int beginningOfEdge = 0;
+                int endOfEdge = 0;
                 for (int i = 0; i < numberOfVertices; i++) {
                     if (incidenceMatrix[i][j] == 2) {
-                        if (beginningOfEdge != -1) {
+                        if (beginningOfEdge != 0) {
                             throw new IllegalArgumentException("Incorrect incidence matrix");
                         }
                         beginningOfEdge = i + 1;
                         endOfEdge = i + 1;
                     }
                     else if (incidenceMatrix[i][j] == 1) {
-                        if (beginningOfEdge != -1) {
+                        if (beginningOfEdge != 0) {
                             throw new IllegalArgumentException("Incorrect incidence matrix");
                         }
                         beginningOfEdge = i + 1;
                     }
                     else if (incidenceMatrix[i][j] == -1) {
-                        if (endOfEdge != -1) {
+                        if (endOfEdge != 0) {
                             throw new IllegalArgumentException("Incorrect incidence matrix");
                         }
                         endOfEdge = i + 1;
@@ -62,13 +78,13 @@ public class GraphCode {
                         throw new IllegalArgumentException("Incorrect incidence matrix");
                     }
                 }
-                if (beginningOfEdge != -1 && endOfEdge != -1) {
+                if (beginningOfEdge != 0 && endOfEdge != 0) {
                     if (Integer.max(beginningOfEdge, endOfEdge) > maxVertexNumber) {
                         maxVertexNumber = Integer.max(beginningOfEdge, endOfEdge);
                     }
                     this.insert(beginningOfEdge, endOfEdge);
                 }
-                else if (!(beginningOfEdge == -1 && endOfEdge == -1)) {
+                else if (!(beginningOfEdge == 0 && endOfEdge == 0)) {
                     throw new IllegalArgumentException("Incorrect incidence matrix");
                 }
             }
@@ -79,8 +95,24 @@ public class GraphCode {
     }
 
     // построение матрицы инцидентности
-    public int [][] getIncidenceMatrix() {
-        return null;
+    public int[][] getIncidenceMatrix() {
+        if (maxVertexNumber == 0) {
+            return null;
+        }
+        int[][] incidenceMatrix = new int[maxVertexNumber][edges.size()];
+        for (int i = 0; i < edges.size(); i++) {
+            int beginningOfEdge = edges.get(i).getBeginningOfEdge();
+            int endOfEdge = edges.get(i).getEndOfEdge();
+            if (beginningOfEdge == endOfEdge) {
+                incidenceMatrix[beginningOfEdge - 1][i] = 2;
+                incidenceMatrix[endOfEdge - 1][i] = 2;
+            }
+            else {
+                incidenceMatrix[beginningOfEdge - 1][i] = 1;
+                incidenceMatrix[endOfEdge - 1][i] = -1;
+            }
+        }
+        return incidenceMatrix;
     }
 
     //вставка некоторого ребра (i,j)
@@ -105,8 +137,10 @@ public class GraphCode {
     }
 
     // удаление ребра (i,j) из списка
-    public void delete(int i, int j) {
-
+    public void delete(int beginningOfEdge, int endOfEdge) {
+        if (beginningOfEdge > 0 && endOfEdge > 0 && beginningOfEdge <= maxVertexNumber && endOfEdge <= maxVertexNumber) {
+            edges.remove(new Edge(beginningOfEdge, endOfEdge));
+        }
     }
 
     // возврат списка ребер, инцидентных вершине i
