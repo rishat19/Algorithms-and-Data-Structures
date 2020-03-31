@@ -5,11 +5,11 @@ import java.util.ArrayList;
 public class GraphCode {
 
     private ArrayList<Edge> edges;
+    private int maxVertexNumber;
 
     private class Edge {
         private int beginningOfEdge;
         private int endOfEdge;
-        private Edge() {};
         public Edge(int beginningOfEdge, int endOfEdge) {
             this.beginningOfEdge = beginningOfEdge;
             this.endOfEdge = endOfEdge;
@@ -21,67 +21,53 @@ public class GraphCode {
 
     public GraphCode() {
         edges = new ArrayList<>();
+        maxVertexNumber = 0;
     }
 
     //конструктор  построение графа по матрице инцидентности
     public GraphCode(int[][] incidenceMatrix) throws IllegalArgumentException, NullPointerException {
+        this();
         if (incidenceMatrix != null) {
-            //количество вершин = количеству строк матрицы
             int numberOfVertices = incidenceMatrix.length;
-            //количество рёбер = количество столбцов матрицы, берём количество столбцов в первой строке,
-            //так как она точно есть
             int numberOfEdges = incidenceMatrix[0].length;
-            //сравниваем остальные строки по длине с первой, если не совпадают, то говорим, что матрицы некорректная
             for (int i = 1; i < numberOfVertices; i++) {
                 if (incidenceMatrix[i].length != numberOfEdges) {
                     throw new IllegalArgumentException("Incorrect incidence matrix");
                 }
             }
-            //обходим матрицы по столбцам, в каждом стобце должна быть ровно одна 1 и ровно одна -1
-            //или же ровно одна 2, остальные нули. Если не так, то говорим, что матрица некорректная
             for (int j = 0; j < numberOfEdges; j++) {
-                //перед тем как пойти по столбцу, инициализируем начало и конец ребра невозможными значениями
-                //вершины графа нумеруем 0, 1, 2, 3 и так далее, поэтому -1 - невозможное значение
                 int beginningOfEdge = -1;
                 int endOfEdge = -1;
-                //начинаю обход по столбцу
                 for (int i = 0; i < numberOfVertices; i++) {
-                    //обработка петли
                     if (incidenceMatrix[i][j] == 2) {
-                       //если значение менялось, то ребро в этом столбце уже и было считано ранее
                         if (beginningOfEdge != -1) {
                             throw new IllegalArgumentException("Incorrect incidence matrix");
                         }
-                        //данная вершина является и началом и концом ребра
-                        beginningOfEdge = i;
-                        endOfEdge = i;
+                        beginningOfEdge = i + 1;
+                        endOfEdge = i + 1;
                     }
-                    //обработка начала ребра
                     else if (incidenceMatrix[i][j] == 1) {
-                        //если значение менялось, то начало ребра уже было считано ранее
                         if (beginningOfEdge != -1) {
                             throw new IllegalArgumentException("Incorrect incidence matrix");
                         }
-                        beginningOfEdge = i;
+                        beginningOfEdge = i + 1;
                     }
-                    //обработка конца ребра
                     else if (incidenceMatrix[i][j] == -1) {
-                        //если значение менялось, то конец ребра уже был считан ранее
                         if (endOfEdge != -1) {
                             throw new IllegalArgumentException("Incorrect incidence matrix");
                         }
-                        endOfEdge = i;
+                        endOfEdge = i + 1;
                     }
-                    //если в таблице встречаются числа, отличные от 0, 1, -1, то матрица некорректна
                     else if (incidenceMatrix[i][j] != 0) {
                         throw new IllegalArgumentException("Incorrect incidence matrix");
                     }
                 }
-                //если ребро считано, вносим его в список
                 if (beginningOfEdge != -1 && endOfEdge != -1) {
+                    if (Integer.max(beginningOfEdge, endOfEdge) > maxVertexNumber) {
+                        maxVertexNumber = Integer.max(beginningOfEdge, endOfEdge);
+                    }
                     this.insert(beginningOfEdge, endOfEdge);
                 }
-                //если считано только начало ребра (конец не считан) или наоборот, то матрица некорректна
                 else if (!(beginningOfEdge == -1 && endOfEdge == -1)) {
                     throw new IllegalArgumentException("Incorrect incidence matrix");
                 }
@@ -98,8 +84,29 @@ public class GraphCode {
     }
 
     //вставка некоторого ребра (i,j)
-    public void insert(int i, int j) {
-
+    public void insert(int beginningOfEdge, int endOfEdge) throws IllegalArgumentException {
+        if (beginningOfEdge < 1 || endOfEdge < 1 ||
+                beginningOfEdge > maxVertexNumber + 2 || endOfEdge > maxVertexNumber + 2) {
+            if (maxVertexNumber == 0) {
+                throw new IllegalArgumentException("The graph has no vertices yet. " +
+                        "You can insert only the edges: 1-1, 1-2 or 2-1");
+            }
+            else {
+                throw new IllegalArgumentException("The graph has vertices with numbers from " + 1 + " to " +
+                        maxVertexNumber + ". You can insert edges connecting vertices with numbers from 1 to " +
+                        (maxVertexNumber + 1) + " or edges: " + (maxVertexNumber + 1) + "-" + (maxVertexNumber + 2) +
+                        ", " + (maxVertexNumber + 2) + "-" + (maxVertexNumber + 1));
+            }
+        }
+        else if (beginningOfEdge == maxVertexNumber + 2 && endOfEdge == maxVertexNumber + 2) {
+            throw new IllegalArgumentException("The graph has vertices with numbers from " + 1 + " to " +
+                    maxVertexNumber + ". You can insert edges connecting vertices with numbers from 1 to " +
+                    (maxVertexNumber + 1) + " or edges: " + (maxVertexNumber + 1) + "-" + (maxVertexNumber + 2) +
+                    ", " + (maxVertexNumber + 2) + "-" + (maxVertexNumber + 1));
+        }
+        else {
+            edges.add(new Edge(beginningOfEdge, endOfEdge));
+        }
     }
 
     // удаление ребра (i,j) из списка
