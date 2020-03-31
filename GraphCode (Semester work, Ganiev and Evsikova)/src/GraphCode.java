@@ -86,7 +86,8 @@ public class GraphCode {
     //вставка некоторого ребра (i,j)
     public void insert(int beginningOfEdge, int endOfEdge) throws IllegalArgumentException {
         if (beginningOfEdge < 1 || endOfEdge < 1 ||
-                beginningOfEdge > maxVertexNumber + 2 || endOfEdge > maxVertexNumber + 2) {
+                beginningOfEdge > maxVertexNumber + 2 || endOfEdge > maxVertexNumber + 2 ||
+                (beginningOfEdge == maxVertexNumber + 2 && endOfEdge == maxVertexNumber + 2)) {
             if (maxVertexNumber == 0) {
                 throw new IllegalArgumentException("The graph has no vertices yet. " +
                         "You can insert only the edges: 1-1, 1-2 or 2-1");
@@ -97,12 +98,6 @@ public class GraphCode {
                         (maxVertexNumber + 1) + " or edges: " + (maxVertexNumber + 1) + "-" + (maxVertexNumber + 2) +
                         ", " + (maxVertexNumber + 2) + "-" + (maxVertexNumber + 1));
             }
-        }
-        else if (beginningOfEdge == maxVertexNumber + 2 && endOfEdge == maxVertexNumber + 2) {
-            throw new IllegalArgumentException("The graph has vertices with numbers from " + 1 + " to " +
-                    maxVertexNumber + ". You can insert edges connecting vertices with numbers from 1 to " +
-                    (maxVertexNumber + 1) + " or edges: " + (maxVertexNumber + 1) + "-" + (maxVertexNumber + 2) +
-                    ", " + (maxVertexNumber + 2) + "-" + (maxVertexNumber + 1));
         }
         else {
             edges.add(new Edge(beginningOfEdge, endOfEdge));
