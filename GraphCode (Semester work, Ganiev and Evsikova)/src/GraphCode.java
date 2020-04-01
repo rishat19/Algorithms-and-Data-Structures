@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Objects;
 
 //Класс GraphCode, хранящий список ребер для графа. Элемент – ребро, содержащее два номера своих вершин.
@@ -100,9 +101,11 @@ public class GraphCode {
     public GraphCode getEdgesWithNode(int i) {
         GraphCode graph = new GraphCode();
         if (i > 0 && i <= maxVertexNumber) {
+            Collections.copy(graph.edges, edges);
+            graph.maxVertexNumber = maxVertexNumber;
             for (Edge edge : edges) {
-                if (i == edge.beginningOfEdge || i == edge.endOfEdge) {
-                    graph.insert(edge.beginningOfEdge, edge.endOfEdge);
+                if (i != edge.beginningOfEdge && i != edge.endOfEdge) {
+                    graph.delete(edge.beginningOfEdge, edge.endOfEdge);
                 }
             }
         }
@@ -238,6 +241,15 @@ public class GraphCode {
             }
             System.out.println();
         }
+    }
+
+    public int[][] get() {
+        int[][] edgesOfGraph = new int[edges.size()][2];
+        for (int i = 0; i < edges.size(); i++) {
+            edgesOfGraph[i][0] = edges.get(i).beginningOfEdge;
+            edgesOfGraph[i][1] = edges.get(i).endOfEdge;
+        }
+        return edgesOfGraph;
     }
 
     @Override
