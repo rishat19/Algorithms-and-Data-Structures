@@ -2,13 +2,28 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Objects;
 
-//Класс GraphCode, хранящий список ребер для графа. Элемент – ребро, содержащее два номера своих вершин.
-
+/**
+ * The GraphCode class stores a list of edges of a directed graph with
+ * loops and multiple edges. An element of the list is an edge containing
+ * two numbers of its vertices. Vertex numbers take values from {@code 1}
+ * to {@code maxVertexNumber}. The first number is the number of the
+ * vertex from which the edge leaves. The second number is the number of
+ * the vertex into which the edge enters. The GraphCode class allows to
+ * work with the incidence matrix of a graph, insert and remove edges,
+ * delete vertices, and perform some other operations.
+ */
 public class GraphCode {
 
     private ArrayList<Edge> edges;
     private int maxVertexNumber;
 
+    /**
+     * The inner private class Edge stores the oriented edge of the graph
+     * as a pair of two integer values: {@code beginningOfEdge} and {@code
+     * endOfEdge}. The first value is the number of the vertex, which is
+     * the beginning of the oriented edge. The second value is the vertex
+     * number, which is the end of the oriented edge.
+     */
     private class Edge {
         private int beginningOfEdge;
         private int endOfEdge;
@@ -34,18 +49,55 @@ public class GraphCode {
         }
     }
 
+    /**
+     * Constructs an empty list of oriented edges of a graph. By default,
+     * the graph also has no vertices.
+     */
     public GraphCode() {
         edges = new ArrayList<>();
         maxVertexNumber = 0;
     }
 
-    //конструктор  построение графа по матрице инцидентности
+    /**
+     * Constructs a list of oriented edges of a graph using a given graph
+     * incidence matrix. The incidence matrix of a directed graph is a
+     * n × m matrix B where n and m are the number of vertices and edges
+     * respectively, such that B(i,j) = 1 if the edge e(j) leaves vertex
+     * v(i), B(i,j) = -1 if it enters vertex v(i), B(i,j) = 2 if it leaves
+     * vertex v(i) and enters vertex v(i) at the same time and 0 otherwise.
+     *
+     * @param incidenceMatrix the incidence matrix of a directed graph.
+     * @throws IllegalArgumentException if the elements of the {@code
+     *                                  incidenceMatrix} are equal to
+     *                                  values other than -1, 0, 1 or 2;
+     *                                  if the rows of the {@code
+     *                                  incidenceMatrix} differ in length;
+     *                                  if the {@code incidenceMatrix}
+     *                                  column does not contain exactly
+     *                                  one 1 and exactly one -1 or does
+     *                                  not contain exactly one 2.
+     * @throws NullPointerException     if the {@code incidenceMatrix} is
+     *                                  null.
+     */
     public GraphCode(int[][] incidenceMatrix) throws IllegalArgumentException, NullPointerException {
         this();
         readIncidenceMatrix(incidenceMatrix);
     }
 
-    // построение матрицы инцидентности
+    /**
+     * Returns the incidence matrix of a directed graph. The incidence
+     * matrix is constructed from a given list of edges of the directed
+     * graph. The incidence matrix of a directed graph is a n × m matrix B
+     * where n and m are the number of vertices and edges respectively,
+     * such that B(i,j) = 1 if the edge e(j) leaves vertex v(i), B(i,j) =
+     * -1 if it enters vertex v(i), B(i,j) = 2 if it leaves vertex v(i)
+     * and enters vertex v(i) at the same time and 0 otherwise. If the
+     * list of edges is empty, then the method returns {@code null}.
+     *
+     * @return the incidence matrix of a directed graph as a
+     * two-dimensional array of integers or {@code null} if the list of
+     * edges of the graph is empty.
+     */
     public int[][] getIncidenceMatrix() {
         if (maxVertexNumber == 0) {
             return null;
@@ -65,7 +117,32 @@ public class GraphCode {
         return incidenceMatrix;
     }
 
-    //вставка некоторого ребра (i,j)
+    /**
+     * Inserts a new oriented edge {@code (beginningOfEdge, endOfEdge)}
+     * into the list of edges of the directed graph. The vertices in the
+     * oriented graph have numbers from {@code 1} to {@code
+     * maxVertexNumber} (highest number of existing vertices), so the
+     * inserted edge must have the numbers of its beginning and end from
+     * {@code 1} to {@code maxVertexNumber + 1}  if it is incident to the
+     * existing vertices of the graph or {@code (maxVertexNumber + 1,
+     * maxVertexNumber + 2)}, {@code (maxVertexNumber + 2, maxVertexNumber
+     * + 1)} if it is not incident to the existing ones vertices of the
+     * graph.
+     *
+     * @param beginningOfEdge   vertex number, which is the beginning of
+     *                          the inserted oriented edge.
+     * @param endOfEdge         vertex number, which is the end of the
+     *                          inserted oriented edge.
+     * @throws IllegalArgumentException if the beginning or end of the
+     *                                  inserted edge of the directed
+     *                                  graph has numbers outside the
+     *                                  range from {@code 1} to {@code
+     *                                  maxVertexNumber + 1} and are not
+     *                                  equal to {@code (maxVertexNumber +
+     *                                  1, maxVertexNumber + 2)} or {@code
+     *                                  (maxVertexNumber + 2,
+     *                                  maxVertexNumber + 1)}.
+     */
     public void insert(int beginningOfEdge, int endOfEdge) throws IllegalArgumentException {
         if (beginningOfEdge < 1 || endOfEdge < 1 ||
                 beginningOfEdge > maxVertexNumber + 2 || endOfEdge > maxVertexNumber + 2 ||
@@ -89,7 +166,19 @@ public class GraphCode {
         }
     }
 
-    // удаление ребра (i,j) из списка
+    /**
+     * Removes a directed edge {@code (beginningOfEdge, endOfEdge)} from
+     * the list of edges of a directed graph. If this edge of the graph
+     * does not exist in the list of edges or incorrect arguments are
+     * entered, the delete method does not perform any actions. Vertices
+     * that are the beginning or end of an edge of a graph are not deleted
+     * when it is deleted.
+     *
+     * @param beginningOfEdge   vertex number, which is the beginning of
+     *                          the deleted oriented edge.
+     * @param endOfEdge         vertex number, which is the end of the
+     *                          deleted oriented edge.
+     */
     public void delete(int beginningOfEdge, int endOfEdge) {
         if (beginningOfEdge > 0 && endOfEdge > 0 &&
                 beginningOfEdge <= maxVertexNumber && endOfEdge <= maxVertexNumber) {
@@ -97,14 +186,28 @@ public class GraphCode {
         }
     }
 
-    // возврат списка ребер, инцидентных вершине i
-    public GraphCode getEdgesWithNode(int i) {
+    /**
+     * Returns a list of oriented edges incident to the {@code vertex} of
+     * the directed graph. The list of oriented edges is returned in the
+     * form of a new {@code GraphCode} storing this list. If there are no
+     * edges of the graph incident to the {@code vertex} or if the {@code
+     * vertex} does not exist in the graph, then the {@code GraphCode}
+     * with an empty list of edges is returned.
+     *
+     * @param vertex    vertex of the directed graph for which the list of
+     *                  edges incident to it is returned.
+     * @return new {@code GraphCode} storing a list of edges of the
+     * directed graph incident to the {@code vertex} or storing an empty
+     * list if there are no edges of the graph incident to the {@code
+     * vertex}, or if the {@code vertex} does not exist in the graph.
+     */
+    public GraphCode getEdgesWithNode(int vertex) {
         GraphCode graph = new GraphCode();
-        if (i > 0 && i <= maxVertexNumber) {
+        if (vertex > 0 && vertex <= maxVertexNumber) {
             Collections.copy(graph.edges, edges);
             graph.maxVertexNumber = maxVertexNumber;
             for (Edge edge : edges) {
-                if (i != edge.beginningOfEdge && i != edge.endOfEdge) {
+                if (vertex != edge.beginningOfEdge && vertex != edge.endOfEdge) {
                     graph.delete(edge.beginningOfEdge, edge.endOfEdge);
                 }
             }
@@ -112,19 +215,28 @@ public class GraphCode {
         return graph;
     }
 
-    //модифицировать список в связи с удалением вершины i из графа (удалить все ребра, инцидентные удаленной вершине)
-    public void modify(int i) {
-        if (i > 0 && i <= maxVertexNumber) {
-            for (int j = edges.size() - 1; j >= 0; j--) {
-                if (i == edges.get(j).beginningOfEdge || i == edges.get(j).endOfEdge) {
-                    edges.remove(j);
+    /**
+     * Modifies the list of edges of a directed graph by removing a {@code
+     * vertex} from the graph. Removes from the list of edges all edges
+     * incident to the {@code vertex}. If the {@code vertex} does not
+     * exist in the directed graph, then the modification method does not
+     * perform any actions.
+     *
+     * @param vertex    vertex that is removed from the directed graph
+     *                  with all edges that are incident to it.
+     */
+    public void modify(int vertex) {
+        if (vertex > 0 && vertex <= maxVertexNumber) {
+            for (int i = edges.size() - 1; i >= 0; i--) {
+                if (vertex == edges.get(i).beginningOfEdge || vertex == edges.get(i).endOfEdge) {
+                    edges.remove(i);
                 }
                 else {
-                    if (edges.get(j).beginningOfEdge > i) {
-                        edges.get(j).beginningOfEdge--;
+                    if (edges.get(i).beginningOfEdge > vertex) {
+                        edges.get(i).beginningOfEdge--;
                     }
-                    if (edges.get(j).endOfEdge > i) {
-                        edges.get(j).endOfEdge--;
+                    if (edges.get(i).endOfEdge > vertex) {
+                        edges.get(i).endOfEdge--;
                     }
                 }
             }
@@ -132,7 +244,18 @@ public class GraphCode {
         }
     }
 
-    //возвратить список вершин, полустепень исхода которых более m.
+    /**
+     * Returns a list of vertices of a directed graph, outdegree which is
+     * greater than {@code m}. If the list of edges of the directed graph
+     * is empty, then the method returns {@code null}.
+     *
+     * @param m integer, in the returned list of vertices added vertices
+     *          of a directed graph, if outdegree greater than this
+     *          integer.
+     * @return a list of vertices of a directed graph, outdegree which is
+     * greater than {@code m}, or {@code null} if the list of edges of the
+     * directed graph is empty.
+     */
     public ArrayList<Integer> outdegreeShow(int m) {
         if (edges.isEmpty()) {
             return null;
@@ -156,7 +279,18 @@ public class GraphCode {
         return vertices;
     }
 
-    //возвратить список вершин, полустепень захода которых более m.
+    /**
+     * Returns a list of vertices of a directed graph, indegree which is
+     * greater than {@code m}. If the list of edges of the directed graph
+     * is empty, then the method returns {@code null}.
+     *
+     * @param m integer, in the returned list of vertices added vertices
+     *          of a directed graph, if indegree greater than this
+     *          integer.
+     * @return a list of vertices of a directed graph, indegree which is
+     * greater than {@code m}, or {@code null} if the list of edges of the
+     * directed graph is empty.
+     */
     public ArrayList<Integer> indegreeShow(int m) {
         if (edges.isEmpty()) {
             return null;
@@ -180,6 +314,29 @@ public class GraphCode {
         return vertices;
     }
 
+    /**
+     * Private method for creating a list of oriented edges of a graph
+     * using a given graph incidence matrix. The method is used in the
+     * constructor and can be used in other class methods. The incidence
+     * matrix of a directed graph is a n × m matrix B where n and m are
+     * the number of vertices and edges respectively, such that B(i,j) = 1
+     * if the edge e(j) leaves vertex v(i), B(i,j) = -1 if it enters
+     * vertex v(i), B(i,j) = 2 if it leaves vertex v(i) and enters vertex
+     * v(i) at the same time and 0 otherwise.
+     *
+     * @param incidenceMatrix the incidence matrix of a directed graph.
+     * @throws IllegalArgumentException if the elements of the {@code
+     *                                  incidenceMatrix} are equal to
+     *                                  values other than -1, 0, 1 or 2;
+     *                                  if the rows of the {@code
+     *                                  incidenceMatrix} differ in length;
+     *                                  if the {@code incidenceMatrix}
+     *                                  column does not contain exactly
+     *                                  one 1 and exactly one -1 or does
+     *                                  not contain exactly one 2.
+     * @throws NullPointerException     if the {@code incidenceMatrix} is
+     *                                  null.
+     */
     private void readIncidenceMatrix(int[][] incidenceMatrix) throws IllegalArgumentException, NullPointerException {
         if (incidenceMatrix != null) {
             int numberOfVertices = incidenceMatrix.length;
@@ -232,18 +389,45 @@ public class GraphCode {
         }
     }
 
+    /**
+     * Prints the incidence matrix of a directed graph. The method does
+     * not print anything if the list of edges of the directed graph is
+     * empty. The incidence matrix of a directed graph is a n × m matrix B
+     * where n and m are the number of vertices and edges respectively,
+     * such that B(i,j) = 1 if the edge e(j) leaves vertex v(i), B(i,j) =
+     * -1 if it enters vertex v(i), B(i,j) = 2 if it leaves vertex v(i)
+     * and enters vertex v(i) at the same time and 0 otherwise.
+     */
     public void printIncidenceMatrix() {
         int[][] incidenceMatrix = this.getIncidenceMatrix();
-        for (int i = 0; i < maxVertexNumber; i++) {
-            for (int j = 0; j < edges.size(); j++) {
-                System.out.printf("%" + 2 + "d", incidenceMatrix[i][j]);
-                System.out.print(" ");
+        if (incidenceMatrix != null) {
+            for (int i = 0; i < maxVertexNumber; i++) {
+                for (int j = 0; j < edges.size(); j++) {
+                    System.out.printf("%" + 2 + "d", incidenceMatrix[i][j]);
+                    System.out.print(" ");
+                }
+                System.out.println();
             }
-            System.out.println();
         }
     }
 
+    /**
+     * Returns a list of edges of a directed graph as a two-dimensional
+     * array of integers. Each row of a two-dimensional array contains two
+     * integers, the first is the number of the vertex of the graph, which
+     * is the beginning of the oriented edge, the second is the number of
+     * the vertices of the graph, which is the end of the oriented graph.
+     * If the list of edges of the directed graph is empty, then the
+     * method returns {@code null}.
+     *
+     * @return a list of edges of an oriented graph as a two-dimensional
+     * array of integers or {@code null} if the list of edges of an
+     * oriented graph is empty.
+     */
     public int[][] get() {
+        if (maxVertexNumber == 0) {
+            return null;
+        }
         int[][] edgesOfGraph = new int[edges.size()][2];
         for (int i = 0; i < edges.size(); i++) {
             edgesOfGraph[i][0] = edges.get(i).beginningOfEdge;
@@ -252,6 +436,19 @@ public class GraphCode {
         return edgesOfGraph;
     }
 
+    /**
+     * Compares the specified object with this {@code GraphCode} for
+     * equality. Returns <tt>true</tt> if the given object is also a
+     * {@code GraphCode}, lists of edges of two Graph Codes are the same
+     * size, the numbers of vertices in two Graph Codes are the same, and
+     * every oriented edge of the given {@code GraphCode} is contained in
+     * this {@code GraphCode}.
+     *
+     * @param o object to be compared for equality with this {@code
+     *          GraphCode}.
+     * @return <tt>true</tt> if the specified object is equal to this
+     * {@code GraphCode}.
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -277,11 +474,27 @@ public class GraphCode {
         return false;
     }
 
+    /**
+     * Returns the hash code value for this {@code GraphCode}. The hash
+     * code of a {@code GraphCode} is defined to be the sum of the hash
+     * codes of the edges in the {@code GraphCode} and hash code of the
+     * vertex of the directed graph with the highest number. The hash
+     * code of a <tt>null</tt> element is defined to be zero.
+     *
+     * @return the hash code value for this {@code GraphCode}.
+     */
     @Override
     public int hashCode() {
         return Objects.hash(edges, maxVertexNumber);
     }
 
+    /**
+     * Returns a string representation of this {@code GraphCode}. The
+     * string representation consists of a list of all edges of a directed
+     * graph, enclosed in curly brackets (<tt>"{}"</tt>).
+     *
+     * @return a string representation of this {@code GraphCode}.
+     */
     @Override
     public String toString() {
         StringBuilder str = new StringBuilder("Graph edges = {");
