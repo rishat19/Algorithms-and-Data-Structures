@@ -58,7 +58,7 @@ public class Main {
         System.out.println(multiSet.delete(1));
         System.out.println(multiSet);
         System.out.println(multiSet.size());
-        Integer[] array2 = new Integer[] {1, 2, 3, 4, 5, 6, 7, 8, 9};
+        Integer[] array2 = new Integer[] {1, 2, 3, 4, 4, 5, 6, 7, 8, 9};
         MultiSet<Integer> multiSet2 = new MultiSet<>(array2);
         System.out.println(multiSet.merge(multiSet2));
         MultiSet<Integer> multiSet3 = new MultiSet<>(multiSet);

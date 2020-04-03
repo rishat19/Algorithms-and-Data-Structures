@@ -96,7 +96,9 @@ public class MultiSet<T> {
     public MultiSet<T> merge(MultiSet<T> multiSet) {
         MultiSet<T> newMultiSet = new MultiSet<>(this);
         for (int i = 0; i < multiSet.size(); i++) {
-            newMultiSet.add(multiSet.elements[i]);
+            for (int j = 0; j < multiSet.counters[i]; j++) {
+                newMultiSet.add(multiSet.elements[i]);
+            }
         }
         return newMultiSet;
     }
