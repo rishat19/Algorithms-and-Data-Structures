@@ -113,7 +113,7 @@ public class LinkedList<T> {
         }
     }
 
-    public T getLast() {
+    public T getLast() throws IndexOutOfBoundsException {
         return this.get(size - 1);
     }
 
