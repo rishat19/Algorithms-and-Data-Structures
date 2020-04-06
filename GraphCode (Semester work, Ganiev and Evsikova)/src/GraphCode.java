@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Objects;
 
 /**
@@ -204,7 +203,7 @@ public class GraphCode {
     public GraphCode getEdgesWithNode(int vertex) {
         GraphCode graph = new GraphCode();
         if (vertex > 0 && vertex <= maxVertexNumber) {
-            Collections.copy(graph.edges, edges);
+            graph.edges = new ArrayList<>(edges);
             graph.maxVertexNumber = maxVertexNumber;
             for (Edge edge : edges) {
                 if (vertex != edge.beginningOfEdge && vertex != edge.endOfEdge) {
