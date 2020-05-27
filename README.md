@@ -16,7 +16,7 @@
 [Сортировка слиянием (рекурсивная и итеративная), алгоритм Карацубы](https://github.com/rishat19/Algorithms-and-Data-Structures/tree/master/Merge%20Sort%20and%20Karatsuba%20algorithm/src)
 
 ### ДЗ №7
-[Бинарное дерево, DFS, BFS, АВЛ-дерево]()
+[Бинарное дерево, DFS, BFS, АВЛ-дерево](https://github.com/rishat19/Algorithms-and-Data-Structures/tree/master/Trees/src)
 
 ### Семестровая работа
 [Класс GraphCode (8 вариант)](https://github.com/rishat19/Algorithms-and-Data-Structures/tree/master/GraphCode%20(Semester%20work%2C%20Ganiev%20and%20Evsikova)/src)
