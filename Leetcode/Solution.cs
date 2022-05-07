@@ -7,6 +7,7 @@ namespace Leetcode
     public class Solution
     {
 
+        // 1
         // 48. Rotate Image
         public void Rotate(int[][] matrix)
         {
@@ -23,6 +24,7 @@ namespace Leetcode
                 }
         }
 
+        // 2
         // 9. Palindrome Number
         public bool IsPalindrome(int x)
         {
@@ -39,6 +41,7 @@ namespace Leetcode
             return false;
         }
 
+        // 3
         // 12. Integer to Roman
         public string IntToRoman(int num)
         {
@@ -56,6 +59,7 @@ namespace Leetcode
             return result.ToString();
         }
 
+        // 4
         // 13. Roman to Integer
         public int RomanToInt(string s)
         {
@@ -115,6 +119,7 @@ namespace Leetcode
             return result;
         }
 
+        // 5
         // 62. Unique Paths
         public int UniquePaths(int m, int n)
         {
@@ -127,12 +132,14 @@ namespace Leetcode
             return UniquePaths(m, n - 1) + UniquePaths(m - 1, n);
         }
 
+        // 6
         // 2235. Add Two Integers
         public int Sum(int num1, int num2)
         {
             return num1 + num2;
         }
 
+        // 7
         // 1828. Queries on Number of Points Inside a Circle
         public int[] CountPoints(int[][] points, int[][] queries)
         {
@@ -154,6 +161,7 @@ namespace Leetcode
             return result;
         }
 
+        // 8
         // 1512. Number of Good Pairs
         public int NumIdenticalPairs(int[] nums)
         {
@@ -173,6 +181,7 @@ namespace Leetcode
             return result;
         }
 
+        // 9
         // 1551. Minimum Operations to Make Array Equal
         public int MinOperations(int n)
         {
@@ -180,6 +189,7 @@ namespace Leetcode
             else return n * n / 4;
         }
 
+        // 10
         // 1281. Subtract the Product and Sum of Digits of an Integer
         public int SubtractProductAndSum(int n)
         {
@@ -194,6 +204,7 @@ namespace Leetcode
             return product - sum;
         }
 
+        // 11
         // 1689. Partitioning Into Minimum Number Of Deci-Binary Numbers
         public int MinPartitions(string n)
         {
@@ -207,6 +218,7 @@ namespace Leetcode
             return max;
         }
 
+        // 12
         // 1929. Concatenation of Array
         public int[] GetConcatenation(int[] nums)
         {
@@ -219,6 +231,7 @@ namespace Leetcode
             return array;
         }
 
+        // 13
         // 1769. Minimum Number of Operations to Move All Balls to Each Box
         public int[] MinOperations(string boxes)
         {
@@ -233,6 +246,7 @@ namespace Leetcode
             return result;
         }
 
+        // 14
         // 1920. Build Array from Permutation
         public int[] BuildArray(int[] nums)
         {
@@ -242,6 +256,7 @@ namespace Leetcode
             return array;
         }
 
+        // 15
         // 807. Max Increase to Keep City Skyline
         public int MaxIncreaseKeepingSkyline(int[][] grid)
         {
@@ -267,6 +282,7 @@ namespace Leetcode
             return result;
         }
 
+        // 16
         // 1480. Running Sum of 1d Array
         public int[] RunningSum(int[] nums)
         {
@@ -277,6 +293,7 @@ namespace Leetcode
             return sums;
         }
 
+        // 17
         // 1637. Widest Vertical Area Between Two Points Containing No Points
         public int MaxWidthOfVerticalArea(int[][] points)
         {
@@ -290,6 +307,7 @@ namespace Leetcode
             return max;
         }
 
+        // 18
         // 1672. Richest Customer Wealth
         public int MaximumWealth(int[][] accounts)
         {
@@ -304,6 +322,7 @@ namespace Leetcode
             return max;
         }
 
+        // 19
         // 2120. Execution of All Suffix Instructions Staying in a Grid
         public int[] ExecuteInstructions(int n, int[] startPos, string s)
         {
@@ -326,6 +345,7 @@ namespace Leetcode
             return result;
         }
 
+        // 20
         // 2011. Final Value of Variable After Performing Operations
         public int FinalValueAfterOperations(string[] operations)
         {
@@ -338,6 +358,7 @@ namespace Leetcode
             return result;
         }
 
+        // 21
         // 1409. Queries on a Permutation With Key
         public int[] ProcessQueries(int[] queries, int m)
         {
@@ -362,12 +383,14 @@ namespace Leetcode
             return result;
         }
 
+        // 22
         // 1108. Defanging an IP Address
         public string DefangIPaddr(string address)
         {
             return address.Replace(".", "[.]");
         }
 
+        // 23
         // 2161. Partition Array According to Given Pivot
         public int[] PivotArray(int[] nums, int pivot)
         {
@@ -401,6 +424,7 @@ namespace Leetcode
             return result;
         }
 
+        // 24
         // 2114. Maximum Number of Words Found in Sentences
         public int MostWordsFound(string[] sentences)
         {
@@ -411,6 +435,163 @@ namespace Leetcode
                 if (current > max) max = current;
             }
             return max;
+        }
+
+        // 25
+        // 2149. Rearrange Array Elements by Sign
+        public int[] RearrangeArray(int[] nums)
+        {
+            List<int> positive = new List<int>();
+            List<int> negative = new List<int>();
+            int[] result = new int[nums.Length];
+            for (int i = 0; i < nums.Length; i++)
+            {
+                if (nums[i] > 0) positive.Add(nums[i]);
+                if (nums[i] < 0) negative.Add(nums[i]);
+            }
+            for (int i = 0; i < positive.Count; i++)
+                result[2 * i] = positive[i];
+            for (int i = 0; i < negative.Count; i++)
+                result[2 * i + 1] = negative[i];
+            return result;
+        }
+
+        // 26
+        // 1470. Shuffle the Array
+        public int[] Shuffle(int[] nums, int n)
+        {
+            int[] array = new int[2 * n];
+            for (int i = 0; i < n; i++)
+                array[2 * i] = nums[i];
+            for (int i = 0; i < n; i++)
+                array[2 * i + 1] = nums[i + n];
+            return array;
+        }
+
+        // 27
+        // 1329. Sort the Matrix Diagonally
+        public int[][] DiagonalSort(int[][] mat)
+        {
+            int[][] matrix = new int[mat.Length][];
+            for (int i = 0; i < matrix.Length; i++)
+                matrix[i] = new int[mat[i].Length];
+            for (int k = 0; k < mat.Length; k++)
+            {
+                List<int> list = new List<int>();
+                int i = k;
+                int j = 0;
+                while (i < mat.Length && j < mat[0].Length)
+                {
+                    list.Add(mat[i][j]);
+                    i++;
+                    j++;
+                }
+                list.Sort();
+                i = k;
+                j = 0;
+                while (i < mat.Length && j < mat[0].Length)
+                {
+                    matrix[i][j] = list[j];
+                    i++;
+                    j++;
+                }
+            }
+            for (int k = 1; k < mat[0].Length; k++)
+            {
+                List<int> list = new List<int>();
+                int i = 0;
+                int j = k;
+                while (i < mat.Length && j < mat[0].Length)
+                {
+                    list.Add(mat[i][j]);
+                    i++;
+                    j++;
+                }
+                list.Sort();
+                i = 0;
+                j = k;
+                while (i < mat.Length && j < mat[0].Length)
+                {
+                    matrix[i][j] = list[i];
+                    i++;
+                    j++;
+                }
+            }
+            return matrix;
+        }
+
+        // 28
+        // 2160. Minimum Sum of Four Digit Number After Splitting Digits
+        public int MinimumSum(int num)
+        {
+            int[] digits = new int[4];
+            int i = 0;
+            while (num > 0)
+            {
+                digits[i] = num % 10;
+                num /= 10;
+                i++;
+            }
+            Array.Sort(digits);
+            return digits[0] * 10 + digits[1] * 10 + digits[2] + digits[3];
+        }
+
+        // 29
+        // 1817. Finding the Users Active Minutes
+        public int[] FindingUsersActiveMinutes(int[][] logs, int k)
+        {
+            Dictionary<int, HashSet<int>> map = new Dictionary<int, HashSet<int>>();
+            for (int i = 0; i < logs.Length; i++)
+                if (!map.ContainsKey(logs[i][0])) map.Add(logs[i][0], new HashSet<int>());
+            for (int i = 0; i < logs.Length; i++)
+                map[logs[i][0]].Add(logs[i][1]);
+            int[] result = new int[k];
+            foreach (KeyValuePair<int, HashSet<int>> entry in map)
+                result[entry.Value.Count - 1]++;
+            return result;
+        }
+
+        // 30
+        // 771. Jewels and Stones
+        public int NumJewelsInStones(string jewels, string stones)
+        {
+            int result = 0;
+            for (int i = 0; i < stones.Length; i++)
+                for (int j = 0; j < jewels.Length; j++)
+                    if (stones[i] == jewels[j])
+                    {
+                        result++;
+                        break;
+                    }
+            return result;
+        }
+
+        // 31
+        // 1877. Minimize Maximum Pair Sum in Array
+        public int MinPairSum(int[] nums)
+        {
+            Array.Sort(nums);
+            int max = 0;
+            for (int i = 0; i < nums.Length / 2; i++)
+            {
+                int pairSum = nums[i] + nums[nums.Length - 1 - i];
+                if (pairSum > max) max = pairSum;
+            }
+            return max;
+        }
+
+        // 32
+        // 1431. Kids With the Greatest Number of Candies
+        public IList<bool> KidsWithCandies(int[] candies, int extraCandies)
+        {
+            int max = candies[0];
+            for (int i = 1; i < candies.Length; i++)
+                if (candies[i] > max) max = candies[i];
+            List<bool> result = new List<bool>();
+            for (int i = 0; i < candies.Length; i++)
+                if (candies[i] + extraCandies >= max) result.Add(true);
+                else result.Add(false);
+            return result;
         }
 
     }
